@@ -1,21 +1,21 @@
 <template>
   <div class="text_group">
     <!-- 组件结构 -->
-    <div class="input_group" :class="{ 'is-valid': error }">
+    <div class="input_group" :class="{ 'is-invalid': error }">
       <input
         :type="type"
-        :value="value"
         :name="name"
+        :value="value"
         :placeholder="placeholder"
-        @input="dfdas"
+        @input="$emit('input', $event.target.value)"
       />
       <!-- 输入框后面的按钮，传则有，没传就没有,disabled控制，文本输入框中点击过的按钮，不能再次点击了 -->
-      <button v-if="btnTittle" :disabled="disabled" @click="fasfda">
-        {{ btnTittle }}
+      <button v-if="btnTitle" :disabled="disabled" @click="$emit('btnClick')">
+        {{ btnTitle }}
       </button>
     </div>
     <!-- 有的时候，验证码有错误，输入框底部 红色字体提示“验证码错误” error有值表示验证码错误 -->
-    <div v-if="true" class="invalid-feedback">{{ error }}</div>
+    <div v-if="error" class="invalid-feedback">{{ error }}</div>
   </div>
 </template>
 <script>
@@ -35,7 +35,7 @@ export default {
     // 文本框识别名name
     name: String,
     // 是否有“获取验证码”这样的按钮，有值则有，无值则表示文本框中没有按钮
-    btnTittle: String,
+    btnTitle: String,
     // 是否可用
     disabled: Boolean,
     // 错误处理
@@ -69,9 +69,10 @@ export default {
   .invalid-feedback {
     color: red;
     padding-top: 5px;
+    text-align: left;
   }
-}
-.is-valid {
-  border: 1px solid #aaa;
+  .is-invalid {
+    border: 1px solid red;
+  }
 }
 </style>

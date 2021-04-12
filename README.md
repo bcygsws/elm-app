@@ -1,4 +1,4 @@
-# elm-app
+# vue-elm
 
 ## Project setup
 ```

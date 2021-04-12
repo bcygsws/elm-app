@@ -1,11 +1,11 @@
 <template>
-  <div id="nav">
+  <div id="app">
     <router-view />
   </div>
 </template>
 
 <style lang="less" scoped>
-#nav {
+#app {
   width: 100%;
   height: 100%;
   background-color: #f1f1f1;

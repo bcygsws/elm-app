@@ -1,21 +1,24 @@
 /* vue 3.0 中命令：npm run lint --fix 可以修复所有因为格式问题报出的警告 */
-import { createRouter, createWebHashHistory } from 'vue-router';
+import Vue from 'vue';
+import Router from 'vue-router';
+Vue.use(Router);
 const routes = [
   {
     path: '/',
     name: 'index',
-    component: () => import('../views/Index'),
+    component: () => import('./views/Index')
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/Login'),
-  },
+    component: () => import('./views/Login')
+  }
 ];
 
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
+const router = new Router({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
 });
 // 路由守卫
 router.beforeEach((to, from, next) => {
