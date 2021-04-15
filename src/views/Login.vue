@@ -30,7 +30,8 @@
     </div>
     <!-- 登录按钮 -->
     <div class="login_btn">
-      <button>登录</button>
+      <!-- 我们希望的是手机号和验证码都输入后，登录按钮，才可以点击。使用computed进行监听 -->
+      <button :disabled="isClick" @click="handleLogin">登录</button>
     </div>
   </div>
 </template>
@@ -44,19 +45,33 @@ export default {
       verifyCode: '',
       errors: {},
       btnTitle: '获取验证码',
-      disabled: false,
+      disabled: false
     };
   },
   components: {
-    InputGroup,
+    InputGroup
+  },
+  computed: {
+    isClick() {
+      // 任何一个值为空，不能点击
+      if (!this.phone || !this.verifyCode) return true;
+      else return false;
+    }
   },
   methods: {
-    created() {
-      console.log(this.phone);
-    },
     getVerifyCode() {
       if (this.validatePhone()) {
         // 发送网络请求
+        // this.$http
+        //   .post('api/posts/sms_send', {
+        //     tpl_id: '140481',
+        //     key: '795be723dd9e88c3ea98e2b6713ab795',
+        //     // 手机号
+        //     phone: this.phone
+        //   })
+        //   .then(res => {
+        //     console.log(res);
+        //   });
       }
       // 手机号合法,发送网络请求
       // if (this.validatePhone) {
@@ -75,7 +90,7 @@ export default {
         return false;
       } else if (!reg.test(this.phone)) {
         this.errors = {
-          phone: '请填写正确的手机号',
+          phone: '请填写正确的手机号'
         };
         return false;
       } else {
@@ -83,7 +98,34 @@ export default {
         return true;
       }
     },
-  },
+    handleLogin() {
+      // 点击按钮登录
+      // 1.取消错误提醒
+      this.errors = {};
+      // 发送请求，去检查验证码是否错误
+      // this.$http
+      //   .post('api/posts/sms_back', {
+      //     phone: this.phone,
+      //     code: this.verifyCode
+      //   })
+      //   .then(res => {
+      //     console.log(res);
+      //     // 检验成功，设置登录状态，并且跳转到/
+      //     localStorage.setItem('ele_login', true);
+      //     // 2.进入主页面
+      //     this.$router.push('/');
+      //   })
+      //   .catch(err => {
+      //     // 没有检验成功，返回验证码错误提示
+      //     this.errors = { code: err.response.data.msg };
+      //   });
+      // 开发状态下，跳过验证
+      // 登录状态值
+      localStorage.setItem('ele_login', true);
+      // 跳转至 '/'
+      this.$router.push('/');
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -4,6 +4,11 @@ import router from './router';
 import store from './store';
 // 引入 初始化样式-消除默认样式
 import '../public/css/reset.css';
+// 引入axios
+import axios from 'axios';
+axios.defaults.baseURL = 'https://ele-interface.herokuapp.com/api/';
+// 全局配置
+Vue.prototype.$http = axios;
 
 // new Vue({
 //   el: '#app',
