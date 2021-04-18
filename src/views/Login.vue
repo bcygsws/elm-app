@@ -108,7 +108,7 @@ export default {
           this.btnTitle = '获取验证码';
           this.disabled = false;
         } else {
-          this.btnTitle = time + 's后重试';
+          this.btnTitle = time + '秒后重试';
           this.disabled = true;
           time--;
         }
