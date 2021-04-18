@@ -61,6 +61,7 @@ export default {
   methods: {
     getVerifyCode() {
       if (this.validatePhone()) {
+        this.reverseTime();
         // 发送网络请求
         // this.$http
         //   .post('api/posts/sms_send', {
@@ -97,6 +98,21 @@ export default {
         this.errors = {};
         return true;
       }
+    },
+    // 定义一个方法，模拟点击“获取验证码”的倒计时效果
+    reverseTime() {
+      let time = 45;
+      const timer = setInterval(() => {
+        if (time === 0) {
+          clearInterval(timer);
+          this.btnTitle = '获取验证码';
+          this.disabled = false;
+        } else {
+          this.btnTitle = time + 's后重试';
+          this.disabled = true;
+          time--;
+        }
+      }, 1000);
     },
     handleLogin() {
       // 点击按钮登录
