@@ -7,7 +7,7 @@
       :key="index"
       active-class="is-selected"
     >
-      <div class="tab-item-icon"><i :class="'fa fa' + item.icon"></i></div>
+      <div class="tab-item-icon"><i :class="'fa fa-' + item.icon"></i></div>
       <div class="tab-item-label">{{ item.title }}</div>
     </router-link>
   </div>
