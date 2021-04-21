@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <!-- 顶部栏 -->
     <div class="header">
       <!-- 点击 跳转至 /address页面， 同时传递参数params:{city:city} -->
       <div
@@ -11,6 +12,7 @@
         <i class="fa fa-sort-desc"></i>
       </div>
     </div>
+    <!-- 内容搜索框 -->
     <div class="search_wrap">
       <div class="shop_search">
         <i class="fa fa-search"></i>
@@ -27,6 +29,7 @@ export default {
       return this.$store.getters.address;
     },
     city() {
+      // App.vue 第60~70行代码
       return (
         this.$store.getters.location.addressComponent.city ||
         this.$store.getters.location.addressComponent.province

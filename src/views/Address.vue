@@ -8,7 +8,7 @@
           >{{ city }}
           <i class="fa fa-angle-down"></i>
         </span>
-        <i></i>
+        <i class="fa fa-search"></i>
         <input
           type="text"
           placeholder="小区/写字楼/学校等"
@@ -17,7 +17,12 @@
       </div>
       <Location :address="address" @click="selectedAddress"></Location>
     </div>
-    <div class="area"></div>
+    <ul class="area">
+      <li v-for="item in areaList" :key="item.id">
+        <p class="name">{{ item.name }}</p>
+        <p>{{ item.district }}{{ item.address }}</p>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -29,7 +34,9 @@ export default {
     return {
       search_val: '',
       // 城市名称
-      city: ''
+      city: '',
+      // 输入关键字后，跟随弹出相关“位置信息”列表
+      areaList: []
     };
   },
   components: { Header, Location },
@@ -39,6 +46,7 @@ export default {
     }
   },
   watch: {
+    // 输入任何内容，显示相关位置的列表
     search_val() {
       this.searchPlace();
     }
@@ -57,6 +65,8 @@ export default {
         autoComplete.search(self.search_val, function(status, result) {
           // 搜索成功时，result即是对应的匹配数据
           console.log(result);
+          // 将输入得到的相关位置列表存放于数组
+          self.areaList = result.tips;
         });
       });
     },
@@ -114,6 +124,21 @@ export default {
         margin-left: 5px;
         border: 0;
         outline: none;
+      }
+    }
+  }
+  .area {
+    background-color: #fff;
+    margin-top: 16px;
+    li {
+      list-style: none;
+      border-bottom: 1px solid #eee;
+      padding: 8px 16px;
+      color: #aaa;
+      p.name {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
       }
     }
   }
