@@ -5,7 +5,7 @@
       <!-- 点击 跳转至 /address页面， 同时传递参数params:{city:city} -->
       <div
         class="address_map"
-        @click="$router.push({ name: 'address', params: { city: city } })"
+        @click="$router.push({ name: 'addr', params: { city: city } })"
       >
         <i class="fa fa-map-marker"></i>
         <span>{{ address }}</span>

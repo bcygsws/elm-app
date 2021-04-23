@@ -26,7 +26,7 @@ const routes = [
       },
       {
         path: '/address',
-        name: 'address',
+        name: 'addr',
         component: () => import('./views/Address')
       },
       {

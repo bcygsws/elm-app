@@ -2,7 +2,10 @@
   <header class="header">
     <div class="header-button is-left" v-show="isLeft">
       <i class="fa fa-chevron-left"></i>
-      <button @click="$router.go(-1)">返回</button>
+      <!-- bug:点击页面的死循环-由home-address-city,点击“取消”，则来到/address页。再点击
+      address页的返回按钮，go(-1)返回上一次浏览的页面，即为/city页，不会回到/home页了，故
+    第8行，应直接明确跳转至/home页 -->
+      <button @click="$router.push('/home')">返回</button>
     </div>
     <!-- 标题 -->
     <h1 class="header-title">{{ title }}</h1>
@@ -16,7 +19,7 @@
 </template>
 <script>
 export default {
-  name: 'header',
+  name: 'hed',
   props: {
     // 页面顶部header标题
     title: String,

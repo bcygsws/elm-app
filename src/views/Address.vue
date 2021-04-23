@@ -18,7 +18,8 @@
       <Location :address="address" @click="selectedAddress"></Location>
     </div>
     <ul class="area">
-      <li v-for="item in areaList" :key="item.id">
+      <!-- 绑定事件，将列表中每个li点击时文本内容，替换原来定位的地址 -->
+      <li v-for="item in areaList" :key="item.id" @click="switchAddress(item)">
         <p class="name">{{ item.name }}</p>
         <p>{{ item.district }}{{ item.address }}</p>
       </li>
@@ -29,7 +30,7 @@
 import Header from '../components/Header.vue';
 import Location from '../components/Location.vue';
 export default {
-  name: 'address',
+  name: 'addr',
   data() {
     return {
       search_val: '',
@@ -81,6 +82,15 @@ export default {
         this.$store.dispatch('setAddress', this.address);
       }
       // 都要跳转到/home
+      this.$router.push('/home');
+    },
+    switchAddress(item) {
+      // a.提交一个action
+      this.$store.dispatch(
+        'setAddress',
+        item.district + item.address + item.name
+      );
+      // b.跳转到'/home'页
       this.$router.push('/home');
     }
   },
