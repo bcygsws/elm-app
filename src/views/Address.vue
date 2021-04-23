@@ -8,7 +8,7 @@
           >{{ city }}
           <i class="fa fa-angle-down"></i>
         </span>
-        <i></i>
+        <i class="fa fa-search"></i>
         <input
           type="text"
           placeholder="小区/写字楼/学校等"
@@ -17,19 +17,27 @@
       </div>
       <Location :address="address" @click="selectedAddress"></Location>
     </div>
-    <div class="area"></div>
+    <ul class="area">
+      <!-- 绑定事件，将列表中每个li点击时文本内容，替换原来定位的地址 -->
+      <li v-for="item in areaList" :key="item.id" @click="switchAddress(item)">
+        <p class="name">{{ item.name }}</p>
+        <p>{{ item.district }}{{ item.address }}</p>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
 import Header from '../components/Header.vue';
 import Location from '../components/Location.vue';
 export default {
-  name: 'address',
+  name: 'addr',
   data() {
     return {
       search_val: '',
       // 城市名称
-      city: ''
+      city: '',
+      // 输入关键字后，跟随弹出相关“位置信息”列表
+      areaList: []
     };
   },
   components: { Header, Location },
@@ -39,6 +47,7 @@ export default {
     }
   },
   watch: {
+    // 输入任何内容，显示相关位置的列表
     search_val() {
       this.searchPlace();
     }
@@ -57,6 +66,8 @@ export default {
         autoComplete.search(self.search_val, function(status, result) {
           // 搜索成功时，result即是对应的匹配数据
           console.log(result);
+          // 将输入得到的相关位置列表存放于数组
+          self.areaList = result.tips;
         });
       });
     },
@@ -71,6 +82,15 @@ export default {
         this.$store.dispatch('setAddress', this.address);
       }
       // 都要跳转到/home
+      this.$router.push('/home');
+    },
+    switchAddress(item) {
+      // a.提交一个action
+      this.$store.dispatch(
+        'setAddress',
+        item.district + item.address + item.name
+      );
+      // b.跳转到'/home'页
       this.$router.push('/home');
     }
   },
@@ -114,6 +134,21 @@ export default {
         margin-left: 5px;
         border: 0;
         outline: none;
+      }
+    }
+  }
+  .area {
+    background-color: #fff;
+    margin-top: 16px;
+    li {
+      list-style: none;
+      border-bottom: 1px solid #eee;
+      padding: 8px 16px;
+      color: #aaa;
+      p.name {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
       }
     }
   }

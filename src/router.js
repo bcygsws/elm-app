@@ -26,7 +26,7 @@ const routes = [
       },
       {
         path: '/address',
-        name: 'address',
+        name: 'addr',
         component: () => import('./views/Address')
       },
       {
@@ -48,7 +48,7 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes
 });
-// 路由守卫
+// 全局路由守卫
 router.beforeEach((to, from, next) => {
   // 设置一个登录标志
   const isLogin = localStorage.ele_login ? true : false;
