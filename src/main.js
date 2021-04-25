@@ -6,8 +6,6 @@ import store from './store';
 import '../public/css/reset.css';
 // 引入axios
 import axios from 'axios';
-axios.defaults.baseURL = 'https://ele-interface.herokuapp.com/api/';
-// 全局配置
 Vue.prototype.$http = axios;
 
 // new Vue({

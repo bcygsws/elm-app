@@ -12,18 +12,52 @@
     <div class="switch_loc">
       <Location :address="city"></Location>
     </div>
+    <Alphabet :cityInfo="cityInfo" :keys="keys"></Alphabet>
   </div>
 </template>
 <script>
 import Location from '../components/Location.vue';
+import Alphabet from '../components/Alphabet.vue';
 export default {
   name: 'city',
   data() {
     return {
-      city_val: ''
+      city_val: '',
+      cityInfo: null,
+      // 检索的字母
+      keys: []
     };
   },
-  components: { Location },
+  components: { Location, Alphabet },
+  // 当数据初始化完成时，就开始调用获取城市信息的钩子
+  created() {
+    this.getCityInfo();
+  },
+  methods: {
+    getCityInfo() {
+      // 参考：https://blog.csdn.net/qq_41387882/article/details/99707813
+      // 使用新接口：https://shadow.elemecdn.com/lib/city-list@0.0.3/city_list.json
+      // 原接口
+      this.$http
+        // .get('api/posts/cities')
+        .get('https://shadow.elemecdn.com/lib/city-list@0.0.3/city_list.json')
+        .then(res => {
+          console.log(res);
+          this.cityInfo = res.data;
+          /* 原API接口处理方式 */
+          // 处理keys
+          // this.keys = Object.keys(res.data);
+          // this.keys.pop(); // 热门城市那个键移除
+          // // 排序
+          // this.keys.sort();
+          this.keys = res.data.alphabet;
+          console.log(this.keys);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
   computed: {
     city() {
       return (
