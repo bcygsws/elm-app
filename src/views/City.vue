@@ -29,10 +29,15 @@ export default {
   name: 'city',
   data() {
     return {
+      // 列表中输入的完整或部分城市名称
       city_val: '',
       cityInfo: null,
       // 检索的字母
-      keys: []
+      keys: [],
+      // 定义所有城市存放的数组
+      allCities: [],
+      // 关键字检索城市列表
+      searchList: []
     };
   },
   components: { Location, Alphabet },
@@ -40,6 +45,12 @@ export default {
   created() {
     // 刷新页面后，city会报错误：undefined city
     this.getCityInfo();
+  },
+  watch: {
+    city_val() {
+      // city_Val值一改变city_val方法就触发，函数searchCity被调用
+      this.searchCity();
+    }
   },
   methods: {
     getCityInfo() {
@@ -64,6 +75,12 @@ export default {
           this.$nextTick(() => {
             this.$refs.allCity.initScroll();
           });
+          this.cityInfo.cityList.forEach(item => {
+            item['cities'].forEach(city => {
+              this.allCities.push(city);
+            });
+          });
+          console.log(this.allCities);
         })
         .catch(err => {
           console.log(err);
@@ -72,7 +89,21 @@ export default {
     // 点击某个城市，跳转至对应城市所在位置
     selectCity(prop) {
       console.log(prop);
-      this.$router.push({ name:'addr',params: { city: prop.name }});
+      this.$router.push({ name: 'addr', params: { city: prop.name } });
+    },
+    // 在文本输入框中输入部分或完整城市名称
+    searchCity() {
+      if (!this.city_val) {
+        // 文本框中没有输入任何城市名相关内容
+        this.searchList = [];
+      } else {
+        //输入了城市名相关的关键字
+        // 过滤器函数返回满足条件的子数组
+        this.searchList = this.allCities.filter(item => {
+          return item.name.indexOf(this.city_val) !== -1;
+        });
+        console.log(this.searchList);
+      }
     }
   },
   computed: {
