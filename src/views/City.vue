@@ -9,9 +9,14 @@
         取消
       </button>
     </div>
-    <div style="height:100%;">
+    <div style="height:100%;" v-if="searchList.length === 0">
       <div class="switch_loc">
-        <Location :address="city"></Location>
+        <!-- 在Location子组件中封装了传给父组件的方法名click
+        注意：和其他处调用的参数类型保持一致，所以，组织一个对象{name:city}作为参数 -->
+        <Location
+          :address="city"
+          @click="selectCity({ name: city })"
+        ></Location>
       </div>
       <Alphabet
         :cityInfo="cityInfo"
@@ -19,6 +24,18 @@
         ref="allCity"
         @selectCity="selectCity"
       ></Alphabet>
+    </div>
+    <div class="search_list" v-else>
+      <ul>
+        <!-- 点击关键字检索列表中的城市名，跳转至address页面，方法上面已经定义，为selectCity -->
+        <li
+          v-for="(item, index) in searchList"
+          @click="selectCity(item)"
+          :key="index"
+        >
+          {{ item.name }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -63,7 +80,13 @@ export default {
         .then(res => {
           console.log(res);
           this.cityInfo = res.data;
-          /* 原API接口处理方式 */
+          /* 原API接口处理方式
+          forEach和map的使用场景区别：
+          当只是遍历，得到某种结果，而不需要返回值，使用forEach
+          当遍历，且需要返回值时，就要使用map方法，返回值是一个新数组
+          some的使用场景：返回值为布尔类型，当第一次返回值为true时，测试终止。对比every
+          方法
+          */
           // 处理keys
           // this.keys = Object.keys(res.data);
           // this.keys.pop(); // 热门城市那个键移除
@@ -156,6 +179,16 @@ export default {
     padding: 8px 16px;
     box-sizing: border-box;
     background-color: #fff;
+  }
+  .search_list {
+    background-color: #fff;
+    padding: 5px 16px;
+    ul {
+      li {
+        border-bottom: 1px solid #eee;
+        padding: 10px;
+      }
+    }
   }
 }
 </style>
