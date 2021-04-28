@@ -15,6 +15,7 @@
           v-model="search_val"
         />
       </div>
+      <!-- Location 中的地址可以点击，去往Location子组件中声明点击方法名，click是子组件传递给父组件的方法名 -->
       <Location :address="address" @click="selectedAddress"></Location>
     </div>
     <ul class="area">
